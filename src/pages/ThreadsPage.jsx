@@ -32,6 +32,10 @@ function ThreadsPage() {
     }
   }
 
+  if (!threads) {
+    return null;
+  }
+
   const filteredThreads = category
     ? threads.filter((thread) => thread.category === category)
     : threads;

@@ -11,7 +11,7 @@ function VoteCommentIcon({ threadId, commentId, upVotesTotal, downVotesTotal, co
   const { id: threadIdParams } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { authUser = null } = useSelector((states) => states.authUser);
+  const authUser = useSelector((states) => states.authUser);
 
   const onUpVote = (id) => {
     if (!authUser) {
