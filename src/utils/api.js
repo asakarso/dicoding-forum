@@ -20,7 +20,7 @@ const api = (() => {
   }
 
   async function register({ name, email, password }) {
-    const response = await fetch(`${BASE_URL}/users`, {
+    const response = await fetch(`${BASE_URL}/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -46,14 +46,14 @@ const api = (() => {
     return user;
   }
 
-  async function login({ id, password }) {
+  async function login({ email, password }) {
     const response = await fetch(`${BASE_URL}/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        id,
+        email,
         password,
       }),
     });
@@ -139,13 +139,13 @@ const api = (() => {
     }
 
     const {
-      data: { threadDetail },
+      data: { detailThread },
     } = responseJson;
 
-    return threadDetail;
+    return detailThread;
   }
 
-  async function createThread({ title, body, category }) {
+  async function createThread({ title, body, category = '' }) {
     const response = await _fetchWithAuth(`${BASE_URL}/threads`, {
       method: 'POST',
       headers: {
