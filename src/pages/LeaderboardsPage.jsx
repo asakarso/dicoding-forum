@@ -1,28 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Navbar from '../components/navbar';
 import LeaderboardItem from '../components/leaderboardItem';
+import { useDispatch, useSelector } from 'react-redux';
+import { asyncReceiveLeaderboards } from '../states/leaderboards/action';
 
 function LeaderboardsPage() {
-  const leaderboards = [
-    {
-      'user': {
-        'id': 'users-1',
-        'name': 'John Doe',
-        'email': 'john@example.com',
-        'avatar': 'https://generated-image-url.jpg'
-      },
-      'score': 10
-    },
-    {
-      'user': {
-        'id': 'users-2',
-        'name': 'Jane Doe',
-        'email': 'jane@example.com',
-        'avatar': 'https://generated-image-url.jpg'
-      },
-      'score': 5
-    }
-  ];
+  const leaderboards = useSelector((states) => states.leaderboards);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(asyncReceiveLeaderboards());
+  }, [dispatch]);
+
+  if (!leaderboards) {
+    return null;
+  }
 
   return (
     <>
@@ -35,7 +28,7 @@ function LeaderboardsPage() {
               <h2>No.</h2>
             </div>
             <div className='grow'>
-              <h2>Nama Pengguna</h2>
+              <h2>Pengguna</h2>
             </div>
             <div className='flex-none'>
               <h2>Skor</h2>

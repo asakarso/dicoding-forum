@@ -1,16 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import DefaultAvatar from '../assets/default-avatar.jpg';
 
 function LeaderboardItem({ leaderboards }) {
   return (
     <>
       {
         leaderboards.map((leaderboard, index) => (
-          <div key={index} className='flex justify-between items-center w-full text-xl mt-4'>
+          <div key={index} className='flex justify-between items-center w-full text-xl mt-8'>
             <div className='flex-none w-[64px]'>
               <p>{index+1}</p>
             </div>
-            <div className='grow'>
+            <div className='grow flex gap-3'>
+              <img src={leaderboard.user.avatar || DefaultAvatar} alt='avatar user' className='w-8 h-8 rounded-full'/>
               <p>{leaderboard.user.name}</p>
             </div>
             <div className='flex-none'>

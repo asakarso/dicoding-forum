@@ -3,11 +3,13 @@ import { postedAt } from '../utils';
 import PropTypes from 'prop-types';
 import VoteCommentIcon from './voteCommentIcon';
 import DefaultAvatar from '../assets/default-avatar.jpg';
+import { useNavigate } from 'react-router-dom';
 
-function ThreadCard({ title, category, body, ownerId, createdAt, totalVotesUp, totalVotesDown, totalComments, onClick, isDetail, ownerName, ownerAvatar }) {
+function ThreadCard({ authUser, threadId, title, category, body, createdAt, votesUp, votesDown, totalComments, isDetail, ownerName, ownerAvatar }) {
+  const navigate = useNavigate();
   return (
     <div className={`border border-gray-400 rounded-lg flex flex-col ${isDetail ? 'gap-6 border-0' : 'gap-3 p-6'}`}>
-      <div onClick={isDetail ? null : onClick} className={`flex items-start gap-2 ${isDetail ? '' : 'cursor-pointer'}`}>
+      <div onClick={isDetail ? null : () => navigate(`/threads/${threadId}`)} className={`flex items-start gap-2 ${isDetail ? '' : 'cursor-pointer'}`}>
         {
           isDetail
             ? <h1 className='text-3xl font-semibold text-primary'>{title}</h1>
@@ -15,37 +17,39 @@ function ThreadCard({ title, category, body, ownerId, createdAt, totalVotesUp, t
         }
         <p className='text-sm border border-primary px-2 rounded-full'>{category}</p>
       </div>
-      <p className={isDetail ? '' : 'line-clamp-2'}>{body}</p>
-      <div className='text-sm text-gray-500 flex gap-2'>
+      <div dangerouslySetInnerHTML={{ __html: body }}  className={isDetail ? '' : 'line-clamp-2'}/>
+      <div className='text-sm text-gray-500 flex gap-1'>
         <p>Dibuat oleh</p>
         {
           isDetail &&
           <img src={ownerAvatar || DefaultAvatar} alt='avatar user' className='w-5 rounded-full'/>
         }
-        <p>{`${isDetail ? ownerName : ownerId} (${postedAt(createdAt)})`}</p>
+        <p>{`${ownerName} (${postedAt(createdAt)})`}</p>
       </div>
       <VoteCommentIcon
-        upVotesTotal={totalVotesUp}
-        downVotesTotal={totalVotesDown}
+        threadId={threadId}
+        upVotesTotal={votesUp.length}
+        downVotesTotal={votesDown.length}
         commentsTotal={totalComments}
-        isComment={true}
         isDetail={isDetail}
-        onClickComment={onClick}
+        isVoteUp={votesUp.includes(authUser.id)}
+        isVoteDown={votesDown.includes(authUser.id)}
+        isComment={false}
       />
     </div>
   );
 }
 
 ThreadCard.propTypes = {
+  authUser: PropTypes.object.isRequired,
+  threadId: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   category: PropTypes.string.isRequired,
   body: PropTypes.string.isRequired,
-  ownerId: PropTypes.string,
   createdAt: PropTypes.string.isRequired,
-  totalVotesUp: PropTypes.number.isRequired,
-  totalVotesDown: PropTypes.number.isRequired,
+  votesUp: PropTypes.array.isRequired,
+  votesDown: PropTypes.array.isRequired,
   totalComments: PropTypes.number.isRequired,
-  onClick: PropTypes.func.isRequired,
   isDetail: PropTypes.bool,
   ownerName: PropTypes.string,
   ownerAvatar: PropTypes.string,

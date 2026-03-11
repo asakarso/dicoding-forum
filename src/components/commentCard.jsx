@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import VoteCommentIcon from './voteCommentIcon';
 import DefaultAvatar from '../assets/default-avatar.jpg';
 
-function CommentCard({ content, ownerName, ownerAvatar, createdAt, totalVotesUp, totalVotesDown }) {
+function CommentCard({ commentId, authUser, content, ownerName, ownerAvatar, createdAt, votesUp, votesDown }) {
   return (
     <div className='p-10 border border-gray-400 rounded-lg flex flex-col gap-4 mt-6 '>
       <div className='flex gap-3 items-center'>
@@ -13,18 +13,27 @@ function CommentCard({ content, ownerName, ownerAvatar, createdAt, totalVotesUp,
       </div>
       <p className='text-sm text-gray-500'>{`Komentar pada ${postedAt(createdAt)}`}</p>
       <p>{content}</p>
-      <VoteCommentIcon upVotesTotal={totalVotesUp} downVotesTotal={totalVotesDown}/>
+      <VoteCommentIcon
+        commentId={commentId}
+        upVotesTotal={votesUp.length}
+        downVotesTotal={votesDown.length}
+        isVoteUp={votesUp.includes(authUser.id)}
+        isVoteDown={votesDown.includes(authUser.id)}
+        isComment={true}
+      />
     </div>
   );
 }
 
 CommentCard.propTypes = {
+  commentId: PropTypes.string.isRequired,
+  authUser: PropTypes.object.isRequired,
   content: PropTypes.string.isRequired,
   ownerName: PropTypes.string.isRequired,
   ownerAvatar: PropTypes.string,
   createdAt: PropTypes.string.isRequired,
-  totalVotesUp: PropTypes.number.isRequired,
-  totalVotesDown: PropTypes.number.isRequired,
+  votesUp: PropTypes.array.isRequired,
+  votesDown: PropTypes.array.isRequired,
 };
 
 export default CommentCard;
