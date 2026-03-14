@@ -23,8 +23,13 @@ function CategoryList({ categories, selectedCategory, onClick }) {
 }
 
 CategoryList.propTypes = {
+  /** The list of categories of the thread */
   categories: PropTypes.array.isRequired,
+
+  /** The category selected or clicked by user */
   selectedCategory: PropTypes.string,
+
+  /** The function run when a category selected or clicked by user */
   onClick: PropTypes.func.isRequired,
 };
 

@@ -45,8 +45,8 @@ function CommentCard({ commentId, authUser, content, ownerName, ownerAvatar, cre
       <p className='text-sm text-gray-500'>{`Komentar pada ${postedAt(createdAt)}`}</p>
       <p>{content}</p>
       <div className='flex gap-4'>
-        <DownVote commentId={commentId} onDownVote={onDownVote} downVotesTotal={votesDown.length} isVoteDown={votesDown.includes(authUser.id)}/>
         <UpVote commentId={commentId} onUpVote={onUpVote} upVotesTotal={votesUp.length} isVoteUp={votesUp.includes(authUser.id)}/>
+        <DownVote commentId={commentId} onDownVote={onDownVote} downVotesTotal={votesDown.length} isVoteDown={votesDown.includes(authUser.id)}/>
       </div>
     </div>
   );

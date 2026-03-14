@@ -76,8 +76,8 @@ function ThreadCard({ authUser, threadId, title, category, body, createdAt, vote
         <p>{`${ownerName} (${postedAt(createdAt)})`}</p>
       </div>
       <div className='flex gap-4'>
-        <DownVote onDownVote={onDownVote} downVotesTotal={votesDown.length} isVoteDown={votesDown.includes(authUser.id)}/>
         <UpVote onUpVote={onUpVote} upVotesTotal={votesUp.length} isVoteUp={votesUp.includes(authUser.id)}/>
+        <DownVote onDownVote={onDownVote} downVotesTotal={votesDown.length} isVoteDown={votesDown.includes(authUser.id)}/>
         <div onClick={() => navigate(`/threads/${threadId}`)} className={`flex gap-1 items-center ${isDetail ? '' : 'cursor-pointer'}`}>
           <HiChatBubbleOvalLeft/>
           <p className='text-sm'>{totalComments}</p>
@@ -88,17 +88,40 @@ function ThreadCard({ authUser, threadId, title, category, body, createdAt, vote
 }
 
 ThreadCard.propTypes = {
+  /** The user who logged in */
   authUser: PropTypes.object.isRequired,
+
+  /** The id of the thread used when the component was on the Home page */
   threadId: PropTypes.string.isRequired,
+
+  /** The title of the hread */
   title: PropTypes.string.isRequired,
+
+  /** The category of the thread */
   category: PropTypes.string.isRequired,
+
+  /** The description or content of the thread */
   body: PropTypes.string.isRequired,
+
+  /** Created time of the thread */
   createdAt: PropTypes.string.isRequired,
+
+  /** The list of user ids who voted up the thread */
   votesUp: PropTypes.array.isRequired,
+
+  /** The list of user ids who voted down the thread */
   votesDown: PropTypes.array.isRequired,
+
+  /** The amount of comments of the thread */
   totalComments: PropTypes.number.isRequired,
+
+  /** The condition if the thread was in Home pgae or Detail page */
   isDetail: PropTypes.bool,
+
+  /** The name of the author */
   ownerName: PropTypes.string,
+
+  /** The avatar of the author */
   ownerAvatar: PropTypes.string,
 };
 
