@@ -18,4 +18,16 @@ export default defineConfig([
   },
   pluginReact.configs.flat.recommended,
   daStyle,
+  {
+    files: ['**/*.cy.{js,jsx}'],
+    plugins: {
+      cypress: pluginCypress,
+    },
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...pluginCypress.environments.globals.globals,
+      },
+    },
+  }
 ]);
