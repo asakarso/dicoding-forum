@@ -1,22 +1,12 @@
 import React from 'react';
 import DefaultAvatar from '../assets/default-avatar.jpg';
-import { useNavigate, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
 import useInput from '../hooks/useInput';
-import { asyncAddComment } from '../states/threadDetail/action';
+import { useNavigate } from 'react-router-dom';
 
-function NewComment({ authUser }) {
-  const { id: threadId } = useParams();
+function NewComment({ authUser, onAddComment }) {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-
   const [content, onContentChange] = useInput('');
-
-  const onAddComment = async (content) => {
-    await dispatch(asyncAddComment({ threadId, content }));
-    window.location.reload();
-  };
 
   if (authUser!==null) {
     return (
@@ -43,6 +33,7 @@ function NewComment({ authUser }) {
 
 NewComment.propTypes = {
   authUser: PropTypes.object.isRequired,
+  onAddComment: PropTypes.func.isRequired,
 };
 
 export default NewComment;

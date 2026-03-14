@@ -1,11 +1,60 @@
 import React from 'react';
 import { postedAt } from '../utils';
 import PropTypes from 'prop-types';
-import VoteCommentIcon from './voteCommentIcon';
 import DefaultAvatar from '../assets/default-avatar.jpg';
 import { useNavigate } from 'react-router-dom';
+import DownVote from './downVote';
+import { asyncDownVoteThreadDetail, asyncNeutralizeVoteThreadDetail, asyncUpVoteThreadDetail } from '../states/threadDetail/action';
+import { useDispatch } from 'react-redux';
+import { asyncToggleDownVoteThread, asyncToggleNeutralizeVoteThread, asyncToggleUpVoteThread } from '../states/threads/actions';
+import UpVote from './upVote';
+import { HiChatBubbleOvalLeft } from 'react-icons/hi2';
 
 function ThreadCard({ authUser, threadId, title, category, body, createdAt, votesUp, votesDown, totalComments, isDetail, ownerName, ownerAvatar }) {
+  const dispatch = useDispatch();
+
+  const onDownVote = ({ threadId, isVoteDown }) => {
+    if (!authUser) {
+      alert('Anda harus Login terlebih dahulu!');
+      return;
+    }
+
+    if (isVoteDown) {
+      if (isDetail) {
+        dispatch(asyncNeutralizeVoteThreadDetail(threadId));
+      } else {
+        dispatch(asyncToggleNeutralizeVoteThread(threadId));
+      }
+    } else {
+      if (isDetail) {
+        dispatch(asyncDownVoteThreadDetail(threadId));
+      } else {
+        dispatch(asyncToggleDownVoteThread(threadId));
+      }
+    }
+  };
+
+  const onUpVote = ({ threadId, isVoteUp }) => {
+    if (!authUser) {
+      alert('Anda harus Login terlebih dahulu!');
+      return;
+    }
+
+    if (isVoteUp) {
+      if (isDetail) {
+        dispatch(asyncNeutralizeVoteThreadDetail());
+      } else {
+        dispatch(asyncToggleNeutralizeVoteThread(threadId));
+      }
+    } else {
+      if (isDetail) {
+        dispatch(asyncUpVoteThreadDetail());
+      } else {
+        dispatch(asyncToggleUpVoteThread(threadId));
+      }
+    }
+  };
+
   const navigate = useNavigate();
   return (
     <div className={`border border-gray-400 rounded-lg flex flex-col ${isDetail ? 'gap-6 border-0' : 'gap-3 p-6'}`}>
@@ -26,16 +75,14 @@ function ThreadCard({ authUser, threadId, title, category, body, createdAt, vote
         }
         <p>{`${ownerName} (${postedAt(createdAt)})`}</p>
       </div>
-      <VoteCommentIcon
-        threadId={threadId}
-        upVotesTotal={votesUp.length}
-        downVotesTotal={votesDown.length}
-        commentsTotal={totalComments}
-        isDetail={isDetail}
-        isVoteUp={votesUp.includes(authUser.id)}
-        isVoteDown={votesDown.includes(authUser.id)}
-        isComment={false}
-      />
+      <div className='flex gap-4'>
+        <DownVote onDownVote={onDownVote} downVotesTotal={votesDown.length} isVoteDown={votesDown.includes(authUser.id)}/>
+        <UpVote onUpVote={onUpVote} upVotesTotal={votesUp.length} isVoteUp={votesUp.includes(authUser.id)}/>
+        <div onClick={() => navigate(`/threads/${threadId}`)} className={`flex gap-1 items-center ${isDetail ? '' : 'cursor-pointer'}`}>
+          <HiChatBubbleOvalLeft/>
+          <p className='text-sm'>{totalComments}</p>
+        </div>
+      </div>
     </div>
   );
 }

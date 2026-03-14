@@ -17,7 +17,7 @@ function Navbar() {
   };
 
   return (
-    <div className='px-8 py-6 shadow-md flex justify-between'>
+    <nav className='px-8 py-6 shadow-md flex justify-between'>
       <div onClick={() => navigate('/')} className='text-2xl flex gap-2 items-center text-primary cursor-pointer'>
         <HiAnnotation/>
         <p className="font-semibold">
@@ -33,7 +33,7 @@ function Navbar() {
             : <p onClick={() => navigate('/login')} className='font-semibold hover:text-black cursor-pointer text-primary border-2 border-primary px-5 py-1 rounded-xl'>Log In</p>
         }
       </div>
-    </div>
+    </nav>
   );
 }
 

@@ -1,10 +1,41 @@
 import React from 'react';
 import { postedAt } from '../utils';
 import PropTypes from 'prop-types';
-import VoteCommentIcon from './voteCommentIcon';
 import DefaultAvatar from '../assets/default-avatar.jpg';
+import DownVote from './downVote';
+import UpVote from './upVote';
+import { useDispatch } from 'react-redux';
+import { asyncDownVoteComment, asyncNeutralizeVoteComment, asyncUpVoteComment } from '../states/threadDetail/action';
 
 function CommentCard({ commentId, authUser, content, ownerName, ownerAvatar, createdAt, votesUp, votesDown }) {
+  const dispatch = useDispatch();
+
+  const onDownVote = ({ threadId, commentId, isVoteDown }) => {
+    if (!authUser) {
+      alert('Anda harus Login terlebih dahulu!');
+      return;
+    }
+
+    if (isVoteDown) {
+      dispatch(asyncNeutralizeVoteComment(threadId, commentId));
+    } else {
+      dispatch(asyncDownVoteComment(threadId, commentId));
+    }
+  };
+
+  const onUpVote = ({ threadId, commentId, isVoteUp }) => {
+    if (!authUser) {
+      alert('Anda harus Login terlebih dahulu!');
+      return;
+    }
+
+    if (isVoteUp) {
+      dispatch(asyncNeutralizeVoteComment(threadId, commentId));
+    } else {
+      dispatch(asyncUpVoteComment(threadId, commentId));
+    }
+  };
+
   return (
     <div className='p-10 border border-gray-400 rounded-lg flex flex-col gap-4 mt-6 '>
       <div className='flex gap-3 items-center'>
@@ -13,14 +44,10 @@ function CommentCard({ commentId, authUser, content, ownerName, ownerAvatar, cre
       </div>
       <p className='text-sm text-gray-500'>{`Komentar pada ${postedAt(createdAt)}`}</p>
       <p>{content}</p>
-      <VoteCommentIcon
-        commentId={commentId}
-        upVotesTotal={votesUp.length}
-        downVotesTotal={votesDown.length}
-        isVoteUp={votesUp.includes(authUser.id)}
-        isVoteDown={votesDown.includes(authUser.id)}
-        isComment={true}
-      />
+      <div className='flex gap-4'>
+        <DownVote commentId={commentId} onDownVote={onDownVote} downVotesTotal={votesDown.length} isVoteDown={votesDown.includes(authUser.id)}/>
+        <UpVote commentId={commentId} onUpVote={onUpVote} upVotesTotal={votesUp.length} isVoteUp={votesUp.includes(authUser.id)}/>
+      </div>
     </div>
   );
 }

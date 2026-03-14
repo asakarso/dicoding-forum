@@ -7,7 +7,7 @@ import ThreadCard from '../components/threadCard';
 import CommentCard from '../components/commentCard';
 import NewComment from '../components/newComment';
 import { useDispatch, useSelector } from 'react-redux';
-import { asyncReceiveThreadDetail } from '../states/threadDetail/action';
+import { asyncAddComment, asyncReceiveThreadDetail } from '../states/threadDetail/action';
 
 function ThreadDetailPage() {
   const { id: threadId } = useParams();
@@ -25,6 +25,11 @@ function ThreadDetailPage() {
   if (!detailThread) {
     return null;
   }
+
+  const onAddComment = async (content) => {
+    await dispatch(asyncAddComment({ threadId, content }));
+    window.location.reload();
+  };
 
   return (
     <>
@@ -48,7 +53,7 @@ function ThreadDetailPage() {
           />
         </div>
         <div className='ml-20'>
-          <NewComment authUser={authUser}/>
+          <NewComment authUser={authUser} onAddComment={onAddComment}/>
           {
             detailThread.comments.map((comment, index) => (
               <CommentCard

@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import ThreadCard from '../components/threadCard';
 import { HiPencilAlt } from 'react-icons/hi';
 import { useDispatch, useSelector } from 'react-redux';
-import { asyncPopulateUsersAndTalks } from '../states/shared/action';
 import CategoryList from '../components/categoryList';
+import { asyncPopulateUsersAndThreads } from '../states/shared/action';
 
 function ThreadsPage() {
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ function ThreadsPage() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(asyncPopulateUsersAndTalks());
+    dispatch(asyncPopulateUsersAndThreads());
   }, [dispatch, setCategory]);
 
   function onCategoryClick(categorySelected) {
