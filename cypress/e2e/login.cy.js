@@ -9,6 +9,7 @@
 
 describe('template spec', () => {
   beforeEach(() => {
+    cy.clearLocalStorage();
     cy.visit('http://localhost:5173/');
   });
 
