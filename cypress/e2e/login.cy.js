@@ -10,11 +10,11 @@
 describe('template spec', () => {
   beforeEach(() => {
     cy.clearLocalStorage();
-    cy.visit('http://localhost:5173/');
+    cy.visit('http://localhost:5173/login');
   });
 
   it('should display login page correctly', () => {
-    cy.visit('http://localhost:5173/');
+    cy.visit('http://localhost:5173/login');
 
     // memverifikasi elemen yang harus tampak pada halaman login
     cy.get('input[placeholder="Email"]').should('be.visible');
