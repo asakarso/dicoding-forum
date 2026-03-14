@@ -3,7 +3,7 @@ import api from '../../utils/api';
 import { receiveThreadsActionCreator } from '../threads/actions';
 import { receiveUsersActionCreator } from '../users/action';
 
-function asyncPopulateUsersAndTalks() {
+function asyncPopulateUsersAndThreads() {
   return async (dispatch) => {
     try {
       dispatch(showLoading());
@@ -12,11 +12,11 @@ function asyncPopulateUsersAndTalks() {
 
       dispatch(receiveUsersActionCreator(users));
       dispatch(receiveThreadsActionCreator(threads));
-      dispatch(hideLoading());
     } catch (error) {
       alert(error.message);
     }
+    dispatch(hideLoading());
   };
 }
 
-export { asyncPopulateUsersAndTalks };
+export { asyncPopulateUsersAndThreads };

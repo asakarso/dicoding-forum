@@ -112,12 +112,10 @@ function asyncReceiveThreadDetail(threadId) {
 function asyncUpVoteThreadDetail() {
   return async (dispatch, getState) => {
     const { authUser, detailThread } = getState();
-    dispatch(upVoteThreadDetailActionCreator(authUser.id));
-
     try {
       await api.upVoteThread({ threadId: detailThread.id });
+      dispatch(upVoteThreadDetailActionCreator(authUser.id));
     } catch (error) {
-      dispatch(neutralizeVoteThreadDetailActionCreator(authUser.id));
       alert(error.message);
     }
   };
@@ -126,12 +124,10 @@ function asyncUpVoteThreadDetail() {
 function asyncDownVoteThreadDetail() {
   return async (dispatch, getState) => {
     const { authUser, detailThread } = getState();
-    dispatch(downVoteThreadDetailActionCreator(authUser.id));
-
     try {
       await api.downVoteThread({ threadId: detailThread.id });
+      dispatch(downVoteThreadDetailActionCreator(authUser.id));
     } catch (error) {
-      dispatch(neutralizeVoteThreadDetailActionCreator(authUser.id));
       alert(error.message);
     }
   };
@@ -140,10 +136,9 @@ function asyncDownVoteThreadDetail() {
 function asyncNeutralizeVoteThreadDetail() {
   return async (dispatch, getState) => {
     const { authUser, detailThread } = getState();
-    dispatch(neutralizeVoteThreadDetailActionCreator(authUser.id));
-
     try {
       await api.neutralizeVoteThread({ threadId: detailThread.id });
+      dispatch(neutralizeVoteThreadDetailActionCreator(authUser.id));
     } catch (error) {
       alert(error.message);
     }
