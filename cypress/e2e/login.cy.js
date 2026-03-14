@@ -10,7 +10,8 @@
 describe('template spec', () => {
   beforeEach(() => {
     cy.clearLocalStorage();
-    cy.visit('http://localhost:5173/login');
+    cy.clearCookies();
+    cy.visit('http://localhost:5173/');
   });
 
   it('should display login page correctly', () => {
